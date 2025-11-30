@@ -15,6 +15,8 @@ Kubernetes project with web app and MongoDB
 
 Структура проекта:
 
+
+```
 kubernetes-web-app/
 ├── deploy/
 │   ├── deployment-app.yaml
@@ -22,6 +24,7 @@ kubernetes-web-app/
 │   ├── deployment-mongodb.yaml
 │   └── service-mongodb.yaml
 └── README.md
+```
 
 Описание:
 deploy/deployment-app.yaml (манифест Deployment для веб‑приложения);
