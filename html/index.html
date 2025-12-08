@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>static page</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('files/back.jpg');
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+    }
+    .video-container {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+    }
+    #video-player {
+      display: none;
+      width: 80vw;
+      max-width: 600px;
+    }
+    #play-button {
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div class="video-container">
+    <button id="play-button">
+      <img src="files/button.jpg" alt="Кнопка запуска видео">
+    </button>
+    <video id="video-player" controls>
+      <source src="files/review.mp4" type="video/mp4">
+      Ваш браузер не поддерживает видео.
+    </video>
+  </div>
+
+  <script>
+    const playButton = document.getElementById('play-button');
+    const videoPlayer = document.getElementById('video-player');
+
+
+    playButton.addEventListener('click', () => {
+      videoPlayer.style.display = 'block';
+      playButton.style.display = 'none';
+      videoPlayer.play();
+    });
+
+    videoPlayer.addEventListener('ended', () => {
+      videoPlayer.style.display = 'none';
+      playButton.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
