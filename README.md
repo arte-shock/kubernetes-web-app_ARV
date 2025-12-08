@@ -5,7 +5,7 @@ Kubernetes project with web app and MongoDB
 
 Проект включает:
 
-- **Веб приложение** (на базе `nginx:alpine`) — отображает статическую страницу;
+- **Веб приложение** (на базе `nginx:alpine`) — отображает статическую страницу, с кнопкой, при нажатии запускается ролик;
 - **MongoDB** — база данных для хранения данных (в режиме single instance);
 - **Volumes** — временное хранилище `emptyDir` для данных приложения и БД;
 - **Service типа NodePort** — публикация веб приложения на порту `30080`.
@@ -15,7 +15,6 @@ Kubernetes project with web app and MongoDB
 
 Структура проекта:
 
-
 ```
 kubernetes-web-app/
 ├── deploy/
@@ -23,6 +22,12 @@ kubernetes-web-app/
 │   ├── service-app.yaml
 │   ├── deployment-mongodb.yaml
 │   └── service-mongodb.yaml
+├── files/
+│   ├── back.jpg
+│   ├── button.jpg
+│   └── review.mp4
+├── html/
+│   └── index.html
 └── README.md
 ```
 
@@ -31,11 +36,11 @@ deploy/deployment-app.yaml (манифест Deployment для веб‑прил
 deploy/service-app.yaml (манифест Service типа NodePort);
 deploy/deployment-mongodb.yaml (манифест Deployment для MongoDB);
 deploy/service-mongodb.yaml (манифест Service для MongoDB);
-README.md (описание проекта, инструкции по запуску).
+files/ (контент для страницы);
+html/  (статическая страница);
+README.md (описание проекта, инструкции по запуску). 
 
-
-Как запустить
-
-Примените манифест:
+Для запуска примените манифест:
   
    kubectl apply -f deploy/
+   http://<IP-ноды>:30080 → открывает страницу с контентом.
