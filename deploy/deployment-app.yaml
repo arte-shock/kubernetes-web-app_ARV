@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: web-app
@@ -12,6 +12,30 @@ spec:
       labels:
         app: web-app
     spec:
+      initContainers:
+      - name: clone-repo
+        image: alpine/git:latest
+        securityContext:
+          runAsUser: 0
+        command:
+        - /bin/sh
+        - -c
+        - |
+          git clone https://github.com/arte-shock/kubernetes-web-app_ARV.git /app/tmp-repo
+          mkdir -p /app
+          cp -r /app/tmp-repo/html/. /app/
+          cp -r /app/tmp-repo/files/. /app/files/
+          rm -rf /app/tmp-repo
+
+          
+          mkdir -p /app/var/cache/nginx/client_temp /app/var/log/nginx /app/var/run
+          chmod -R 755 /app
+          find /app -type f -exec chmod 644 {} \;
+          chown -R 101:101 /app
+        volumeMounts:
+        - name: app-content
+          mountPath: /app
+
       containers:
       - name: web-app
         image: nginx:alpine
@@ -20,26 +44,26 @@ spec:
         volumeMounts:
         - name: app-content
           mountPath: /usr/share/nginx/html
+        - name: nginx-cache
+          mountPath: /var/cache/nginx
+        - name: nginx-log
+          mountPath: /var/log/nginx
+        - name: nginx-run
+          mountPath: /var/run
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 101
+          runAsGroup: 101
+          readOnlyRootFilesystem: false
+
       volumes:
       - name: app-content
         emptyDir: {}
-      initContainers:
-      - name: setup-content
-        image: busybox
-        command: ['/bin/sh', '-c']
-        args:
-        - |
-          mkdir -p /app/html /app/files &&
-          cp -r /tmp/content/html/* /app/html/ &&
-          cp -r /tmp/content/files/* /app/files/
-        volumeMounts:
-        - name: app-content
-          mountPath: /app
-        - name: temp-content
-          mountPath: /tmp/content
-      volumes:
-      - name: temp-content
-        gitRepo:
-          repository: https://github.com/arte-shock/kubernetes-web-app_ARV.git
-          revision: main
-          directory: .
+      - name: nginx-cache
+        emptyDir: {}
+      - name: nginx-log
+        emptyDir: {}
+      - name: nginx-run
+        emptyDir: {}
+
+      restartPolicy: Always
