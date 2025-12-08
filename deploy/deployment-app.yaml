@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+      - name: web-app
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: app-content
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: app-content
+        emptyDir: {}
+      initContainers:
+      - name: setup-content
+        image: busybox
+        command: ['/bin/sh', '-c']
+        args:
+        - |
+          mkdir -p /app/html /app/files &&
+          cp -r /tmp/content/html/* /app/html/ &&
+          cp -r /tmp/content/files/* /app/files/
+        volumeMounts:
+        - name: app-content
+          mountPath: /app
+        - name: temp-content
+          mountPath: /tmp/content
+      volumes:
+      - name: temp-content
+        gitRepo:
+          repository: https://github.com/arte-shock/kubernetes-web-app_ARV.git
+          revision: main
+          directory: .
