@@ -18,6 +18,7 @@ Kubernetes project with web app and MongoDB
 ```
 kubernetes-web-app/
 ├── deploy/
+│   ├── configmap-nginx.yaml
 │   ├── deployment-app.yaml
 │   ├── service-app.yaml
 │   ├── deployment-mongodb.yaml
