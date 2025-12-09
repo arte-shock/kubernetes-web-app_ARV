@@ -42,6 +42,7 @@ html/  (статическая страница);
 README.md (описание проекта, инструкции по запуску). 
 
 Для запуска примените манифест:
-  
+   git clone https://github.com/arte-shock/kubernetes-web-app_ARV.git
+   cd kubernetes-web-app_ARV
    kubectl apply -f deploy/
    http://<IP-ноды>:30080 → открывает страницу с контентом.
