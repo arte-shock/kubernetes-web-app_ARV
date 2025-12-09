@@ -33,6 +33,7 @@ kubernetes-web-app/
 ```
 
 Описание:
+```
 deploy/deployment-app.yaml (манифест Deployment для веб‑приложения);
 deploy/service-app.yaml (манифест Service типа NodePort);
 deploy/deployment-mongodb.yaml (манифест Deployment для MongoDB);
@@ -40,9 +41,12 @@ deploy/service-mongodb.yaml (манифест Service для MongoDB);
 files/ (контент для страницы);
 html/  (статическая страница);
 README.md (описание проекта, инструкции по запуску). 
-
+```
 Для запуска примените манифест:
+```
    git clone https://github.com/arte-shock/kubernetes-web-app_ARV.git
-   cd kubernetes-web-app_ARV
    kubectl apply -f deploy/
-   http://<IP-ноды>:30080 → открывает страницу с контентом.
+   kubecget pod
+   kubectl port-forward web-app-*** 8080:80
+   http://localhost:8080 → открывает страницу с контентом.
+```
